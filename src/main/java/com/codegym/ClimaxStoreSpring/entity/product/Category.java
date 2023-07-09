@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -30,6 +31,9 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
-    @ManyToMany
-            (targetEntity = Product.class, fetch = FetchType.LAZY, mappedBy = "")
+    @Column(name = "isDeleted")
+    private Boolean isDeleted;
+
+    @ManyToMany(targetEntity = Product.class, fetch = FetchType.LAZY, mappedBy = "categoryList")
+    List<Product> productList;
 }
