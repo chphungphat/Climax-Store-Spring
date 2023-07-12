@@ -1,5 +1,7 @@
-package com.codegym.ClimaxStoreSpring.entity.product;
+package com.codegym.ClimaxStoreSpring.entity.business;
 
+import com.codegym.ClimaxStoreSpring.entity.product.Product;
+import com.codegym.ClimaxStoreSpring.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,27 +12,34 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@Entity
+@Table(name = "cart_details")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "product_images")
-public class ProductImage {
+public class CartDetail {
     @Id
-    @GeneratedValue
-    @Column(name = "product_image_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_detail_id")
     private Long id;
 
-    @Column(name = "product_image_url")
-    private String productImageUrl;
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    @Column(name = "sub_total_price")
+    private Double subTotalPrice;
+
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
     @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")

@@ -1,5 +1,6 @@
 package com.codegym.ClimaxStoreSpring.service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ public interface GenericService<T> {
 
     T save(T t);
 
-    void remove(T t);
+    T update(Long id, T t) throws EntityNotFoundException;
 
-    Optional<T> update(T t, Long id);
+    void remove(Long id) throws EntityNotFoundException;
 }

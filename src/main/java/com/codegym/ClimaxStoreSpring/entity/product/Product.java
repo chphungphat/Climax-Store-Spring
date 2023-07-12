@@ -1,10 +1,15 @@
 package com.codegym.ClimaxStoreSpring.entity.product;
 
+//import com.codegym.ClimaxStoreSpring.entity.business.CartDetail;
+//import com.codegym.ClimaxStoreSpring.entity.business.BoughtProduct;
+import com.codegym.ClimaxStoreSpring.entity.business.BoughtProduct;
+import com.codegym.ClimaxStoreSpring.entity.business.CartDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,11 +19,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +60,7 @@ public class Product {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @ManyToOne(targetEntity = Developer.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Developer.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "developer_id", referencedColumnName = "developer_id")
     private Developer developer;
 
@@ -65,9 +68,13 @@ public class Product {
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     private List<ProductImage> productImageList;
 
-    @ManyToMany(targetEntity = Category.class, mappedBy = "productList", fetch = FetchType.LAZY)
-    @JoinTable(name = "product_category",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "category_id"))
-    List<Category> categoryList;
+    @ManyToMany(targetEntity = Category.class, fetch = FetchType.EAGER, mappedBy = "productList")
+    private List<Category> categoryList;
+
+    @OneToMany(targetEntity = CartDetail.class, fetch = FetchType.LAZY, mappedBy = "product",
+            cascade = {CascadeType.PERSIST, CascadeType.PERSIST})
+    private List<CartDetail> cartDetailList;
+
+    @OneToMany(targetEntity = BoughtProduct.class, fetch = FetchType.LAZY, mappedBy = "product")
+    private List<BoughtProduct> boughtProductList;
 }

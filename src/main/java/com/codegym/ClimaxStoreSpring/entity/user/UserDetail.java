@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,6 +42,7 @@ public class UserDetail {
     @Column(name = "gender")
     private String gender;
 
-    @OneToOne(targetEntity = User.class, mappedBy = "userDetail", fetch = FetchType.LAZY, cascade = Ca)
+    @OneToOne(targetEntity = User.class, mappedBy = "userDetail", fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private User user;
 }

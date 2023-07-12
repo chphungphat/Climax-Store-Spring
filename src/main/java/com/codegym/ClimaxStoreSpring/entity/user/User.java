@@ -1,6 +1,8 @@
 package com.codegym.ClimaxStoreSpring.entity.user;
 
-import com.fasterxml.jackson.databind.DatabindException;
+//import com.codegym.ClimaxStoreSpring.entity.business.CartDetail;
+import com.codegym.ClimaxStoreSpring.entity.business.BoughtProduct;
+import com.codegym.ClimaxStoreSpring.entity.business.CartDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +18,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -49,19 +53,27 @@ public class User {
     private Boolean isDeleted;
 
     @Column(name = "created_date")
-    private Date createdDate;
+    private Date createdDate = new Date();
 
-    @ManyToOne(targetEntity = Role.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
 
     @OneToOne(targetEntity = UserDetail.class, fetch = FetchType.LAZY,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "userDetail")
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_detail_id", referencedColumnName = "user_detail_id")
     private UserDetail userDetail;
 
-    @OneToOne(targetEntity = Address.class, fetch = FetchType.LAZY,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "address")
+    @OneToOne(targetEntity = Address.class, fetch = FetchType.EAGER,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     private Address address;
+
+    @OneToMany(targetEntity = CartDetail.class, fetch = FetchType.LAZY, mappedBy = "user",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<CartDetail> cartDetailList;
+
+    @OneToMany(targetEntity = BoughtProduct.class, fetch = FetchType.LAZY, mappedBy = "user",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<BoughtProduct> boughtProductList;
 }

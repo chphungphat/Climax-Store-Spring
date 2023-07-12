@@ -4,19 +4,19 @@ import com.codegym.ClimaxStoreSpring.entity.user.User;
 import com.codegym.ClimaxStoreSpring.repository.UserRepository;
 import com.codegym.ClimaxStoreSpring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-
     @Autowired
-    private UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Qualifier("userRepository")
+    private UserRepository userRepository;
 
     @Override
     public List<User> findAll() {
@@ -30,16 +30,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        return null;
+        return userRepository.save(user);
     }
 
     @Override
-    public void remove(User user) {
-
+    public User update(Long id, User user) throws EntityNotFoundException {
+        Optional<User> findUser = userRepository.findById(id);
+        if (findUser.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        } else {
+            user.setId(id);
+            return userRepository.save(user);
+        }
     }
 
     @Override
-    public Optional<User> update(User user, Long id) {
-        return userRepository.s;
+    public void remove(Long id) throws EntityNotFoundException {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        } else {
+            userRepository.delete(user.get());
+        }
+    }
+
+    @Override
+    public User findByUserName(String userName) throws EntityNotFoundException {
+        Optional<User> user = userRepository.findByUserName(userName);
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        } else {
+            return user.get();
+        }
     }
 }
