@@ -1,5 +1,7 @@
-package com.codegym.ClimaxStoreSpring.entity.user;
+package com.codegym.ClimaxStoreSpring.security;
 
+import com.codegym.ClimaxStoreSpring.entity.user.Role;
+import com.codegym.ClimaxStoreSpring.entity.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,6 +52,10 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !(user.getIsDeleted());
+        return !(user.getDeleted());
+    }
+
+    public Long getId() {
+        return this.user.getId();
     }
 }

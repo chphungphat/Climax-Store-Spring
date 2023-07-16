@@ -1,6 +1,5 @@
 package com.codegym.ClimaxStoreSpring.entity.user;
 
-//import com.codegym.ClimaxStoreSpring.entity.business.CartDetail;
 import com.codegym.ClimaxStoreSpring.entity.business.BoughtProduct;
 import com.codegym.ClimaxStoreSpring.entity.business.CartDetail;
 import lombok.AllArgsConstructor;
@@ -21,6 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -50,9 +52,10 @@ public class User {
     private String password;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean deleted = false;
 
     @Column(name = "created_date")
+    @Temporal(TemporalType.DATE)
     private Date createdDate = new Date();
 
     @ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)

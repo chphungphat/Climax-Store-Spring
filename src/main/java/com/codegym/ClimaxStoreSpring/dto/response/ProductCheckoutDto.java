@@ -11,8 +11,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponseLoginDto {
-    private String userName;
-
-    private String role_name;
+public class ProductCheckoutDto {
+    private Long id;
+    private String productName;
+    private String productCoverUrl;
+    private Double price;
+    private Integer quantity;
 }

@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
@@ -33,6 +35,7 @@ public class BoughtProduct {
     private Long id;
 
     @Column(name = "checkout_date")
+    @Temporal(TemporalType.DATE)
     private Date checkoutDate = new Date();
 
     @Column(name = "product_key")
